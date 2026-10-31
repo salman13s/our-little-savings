@@ -1,5 +1,5 @@
--- Create your admin user in Supabase Authentication > Users first.
--- Then mark that user as admin with the UPDATE statement in README.md.
+-- Run this for a fresh project. For an existing project, use access_requests.sql
+-- and make sure the four deposits policies match the definitions below.
 create extension if not exists pgcrypto;
 
 create table if not exists public.deposits (
@@ -11,31 +11,22 @@ create table if not exists public.deposits (
 );
 
 alter table public.deposits enable row level security;
+drop policy if exists "public can view deposits" on public.deposits;
+drop policy if exists "signed-in users can view deposits" on public.deposits;
+drop policy if exists "authenticated users can view deposits" on public.deposits;
+drop policy if exists "admin can add deposits" on public.deposits;
+drop policy if exists "admin can update deposits" on public.deposits;
+drop policy if exists "admin can delete deposits" on public.deposits;
 
-create policy "signed-in users can view deposits"
-on public.deposits for select
-to authenticated
-using (true);
-
+create policy "authenticated users can view deposits"
+on public.deposits for select to authenticated using (true);
 create policy "admin can add deposits"
-on public.deposits for insert
-to authenticated
+on public.deposits for insert to authenticated
 with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-
 create policy "admin can update deposits"
-on public.deposits for update
-to authenticated
+on public.deposits for update to authenticated
 using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
 with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-
 create policy "admin can delete deposits"
-on public.deposits for delete
-to authenticated
+on public.deposits for delete to authenticated
 using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
-
--- OPTION A: anyone with the link can view (read-only).
--- To enable password-protected viewing instead, drop this policy.
-create policy "public can view deposits"
-on public.deposits for select
-to anon
-using (true);

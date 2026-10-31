@@ -1,0 +1,2 @@
+[functions.access-request]
+verify_jwt = false

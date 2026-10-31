@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Our Little Savings
 
 A small USD savings dashboard with a romantic/elegant design. Deposits are stored in Supabase; the total is calculated from the deposit records.
@@ -120,3 +121,7 @@ jobs:
 - The admin account is authorized by the `role=admin` value in its Supabase app metadata. Only set this value for your own account, never for the viewer account.
 - The public read policy intentionally exposes the deposit amounts, dates, and notes to anyone who can reach the site. Use password mode if you do not want that.
 - This starter is a small personal ledger, not a bank account and not a place to store payment credentials.
+=======
+# our-little-savings-
+little program that shows the accumalated budget 
+>>>>>>> 4c22d8bd941b6f3b3f756c037cad867a71b0c12e
